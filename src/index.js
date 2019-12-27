@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 
 const lista = [
   1,2,3,4,5,6,7,8,9,
@@ -28,61 +29,23 @@ const vaikein = [
 const SudokuGrid = () => {
   const items = [];
 
-  const mystyleThick = {
-    border: "3px solid black",
-    borderCollapse: "collapse"
-  }
-
-  const border1 = {
-    border: "1px solid black",
-    borderCollapse: "collapse",
-    paddingLeft: "5px",
-    paddingRight: "5px"
-  }
-
-  const border2 = {
-    border: "1px solid black",
-    borderBottom: "3px solid black",
-    borderCollapse: "collapse",
-    paddingLeft: "5px",
-    paddingRight: "5px"
-  }
-
-  const border3 = {
-    border: "1px solid black",
-    borderRight: "3px solid black",
-    borderCollapse: "collapse",
-    paddingLeft: "5px",
-    paddingRight: "5px"
-  }
-
-  const border4 = {
-    border: "1px solid black",
-    borderBottom: "3px solid black",
-    borderRight: "3px solid black",
-    borderCollapse: "collapse",
-    paddingLeft: "5px",
-    paddingRight: "5px"
-  }
-
   for (let i = 0; i < lista.length; i = i + 9) {
-    const keko = [];
-    let styleBox = {};
+    const cells = [];
+    let borderStyle = {};
 
     for (let j = i; j < i + 9; j++) {
       if ((j % 3) === 2) {
-        styleBox = (i / 9) % 3 === 2 ? border4 : border3; 
+        borderStyle = (i / 9) % 3 === 2 ? "thickBotRight" : "thickRight"; 
       } else {
-        styleBox = (i / 9) % 3 === 2 ? border2 : border1;
+        borderStyle = (i / 9) % 3 === 2 ? "thickBot" : "";
       }
-
-      keko.push(<td style={styleBox} key={j}>{vaikein[j] === 0 ? " " : vaikein[j]}</td>);
+      cells.push(<td className={"borders " + borderStyle} key={j}>{vaikein[j] === 0 ? " " : vaikein[j]}</td>);
     }
-    items.push(<tr key={i}>{keko}</tr>)
+    items.push(<tr key={i}>{cells}</tr>)
   }
 
   return (
-    <table style={mystyleThick}>
+    <table className="mystyleThick">
       <tbody>
         {items}
       </tbody>
