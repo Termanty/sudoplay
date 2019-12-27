@@ -25,8 +25,6 @@ const vaikein = [
   0,9,0,0,0,0,4,0,0
 ];
 
-
-
 const SudokuGrid = () => {
   const items = [];
 
@@ -67,13 +65,9 @@ const SudokuGrid = () => {
     paddingRight: "5px"
   }
 
-
-
-
   for (let i = 0; i < lista.length; i = i + 9) {
     const keko = [];
     let styleBox = {};
-
 
     for (let j = i; j < i + 9; j++) {
       if ((j % 3) === 2) {
@@ -103,5 +97,3 @@ const App = () => (
   </div>
 )
 ReactDOM.render(<App />, document.getElementById('root'));
-
-
