@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { SudokuGrid } from './SudokuGrid';
@@ -27,11 +27,30 @@ const sudo2 = [
   0, 9, 0, 0, 0, 0, 4, 0, 0
 ];
 
+
+
+
 const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  const handleClick = () => {
+    console.log('clicked')
+  }
+
+  const setToValue = () => {
+    let value = counter + 1
+    setCounter(value)
+    console.log(value)
+  }
+
   return (<div>
     <p>Hello World</p>
     <SudokuGrid sudo={sudo2} />
     <button type="button">SOLVE</button>
+    <button onClick={handleClick}>click this!</button>
+    <button onClick={setToValue}>+ PLUS + {counter}</button>
+   
+    <SudokuGrid sudo={sudo1} />
   </div>);
 }
 ReactDOM.render(<App />, document.getElementById('root'));
