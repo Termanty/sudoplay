@@ -27,22 +27,85 @@ const sudo2 = [
   0, 9, 0, 0, 0, 0, 4, 0, 0
 ];
 
+const empty = [
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0
+]
+
+var ready = false;
 
 const solveSudoku = function(origin) {
-  let tmp = [...origin]
-  for(let i = 0; i < tmp.length; i++) {
-    tmp[i] = ++tmp[i]
-  }
-  console.log(tmp)
- 
-  const checkReady = (num) =>  num < 10 ? false : true
+  let tmp = []
 
-  const solver = function(d) {
-    if (checkReady(d)) { return }
-    console.log(d)
-    return solver(++d)
+  if (ready) {return tmp}
+
+  const checkReady = (num, arr) => {
+     if (num > 60) {
+       ready = true
+       if (tmp.length < 10) {
+        tmp = [...arr]
+       }
+     }
+     return ready
   }
-  solver(0)
+
+  const kelpaa = (index, arr) => {
+    // rivi
+    let rivi = Math.floor(index / 9)
+    let alku = rivi * 9
+    let testi = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for(let i = alku; i < alku + 9; i++) {
+      if (arr[i] !== 0 ) { testi[arr[i]]++ }
+    }
+    for(let i = 0; i < testi.length; i++) {
+      if (testi[i] > 1) {
+        return false}
+    }
+    //console.log(testi)
+
+    // sarake
+    alku = index % 9
+    testi = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for(let i = alku; i < 81; i = i + 9) {
+      if (arr[i] !== 0 ) { testi[arr[i]]++ }
+    }
+    for(let i = 0; i < testi.length; i++) {
+      if (testi[i] > 1) {
+        return false}
+    }
+    //console.log(testi)
+
+    // ruutu
+
+
+    return true
+  }
+
+  function solver(d, s) {
+    if (checkReady(d, s)) { return }
+    while (origin[d] !== 0) { d++ };
+    console.log(d)
+    //console.log(s)
+    for(let i = 1; i < 10; i++) {
+      if (ready) { return }
+      s[d] = i;
+      if (kelpaa(d, s)) {
+        solver(++d, [...s])
+      }
+      if (i === 9) {
+       //console.log("täällä")
+      }
+    }
+    return
+  }
+  solver(0, [...origin])
 
 
   return tmp
@@ -53,13 +116,13 @@ const App = () => {
   const [ counter, setCounter ] = useState(0)
 
   const handleClick = () => {
-    console.log('clicked')
+    //console.log('clicked')
   }
 
   const setToValue = () => {
     let value = counter + 1
     setCounter(value)
-    console.log(value)
+    //console.log(value)
   }
 
   const solvedSudoku = solveSudoku(sudo2)
