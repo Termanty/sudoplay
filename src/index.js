@@ -28,6 +28,25 @@ const sudo2 = [
 ];
 
 
+const solveSudoku = function(origin) {
+  let tmp = [...origin]
+  for(let i = 0; i < tmp.length; i++) {
+    tmp[i] = ++tmp[i]
+  }
+  console.log(tmp)
+ 
+  const checkReady = (num) =>  num < 10 ? false : true
+
+  const solver = function(d) {
+    if (checkReady(d)) { return }
+    console.log(d)
+    return solver(++d)
+  }
+  solver(0)
+
+
+  return tmp
+}
 
 
 const App = () => {
@@ -43,6 +62,8 @@ const App = () => {
     console.log(value)
   }
 
+  const solvedSudoku = solveSudoku(sudo2)
+
   return (<div>
     <p>Hello World</p>
     <SudokuGrid sudo={sudo2} />
@@ -50,7 +71,7 @@ const App = () => {
     <button onClick={handleClick}>click this!</button>
     <button onClick={setToValue}>+ PLUS + {counter}</button>
    
-    <SudokuGrid sudo={sudo1} />
+    <SudokuGrid sudo={solvedSudoku} />
   </div>);
 }
 ReactDOM.render(<App />, document.getElementById('root'));
