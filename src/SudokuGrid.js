@@ -17,9 +17,10 @@ export const SudokuGrid = ({ sudo }) => {
     }
     items.push(<tr key={i}>{cells}</tr>);
   }
-  return (<table className="mystyleThick">
-    <tbody>
-      {items}
-    </tbody>
-  </table>);
+  return (
+    <table className="mystyleThick">
+      <tbody>
+        {items}
+      </tbody>
+    </table>);
 };

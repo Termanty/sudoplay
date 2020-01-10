@@ -1,18 +1,5 @@
-export const solveSudoku = function (origin) {
-  let solved = false;
-  let final = [];
-  let tmp = [...origin];
-
-  const checkReady = (num, arr) => {
-    if (num > 80) {
-      solved = true;
-      final = [...arr];
-    }
-    return solved;
-  };
-
-  const kelpaa = (index, arr) => {
-    // rivi
+const checkRules = (index, arr) => {
+    // row
     let rivi = Math.floor(index / 9);
     let alku = rivi * 9;
     let testi = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -25,8 +12,7 @@ export const solveSudoku = function (origin) {
         } 
       }
     }
-
-    // sarake
+    // column
     alku = index % 9;
     testi = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (let i = alku; i < 81; i = i + 9) {
@@ -37,9 +23,8 @@ export const solveSudoku = function (origin) {
             return false
         } 
       }
-    }
-    
-    // ruutu
+    } 
+    // box
     let x = Math.floor(index / 27);
     let y = Math.floor(index % 9 / 3);
     alku = x * 27 + y * 3;
@@ -54,31 +39,37 @@ export const solveSudoku = function (origin) {
             } 
         }
       }
-    }
-    
+    };   
     return true;
-  };
+};
+
+export const solveSudoku = function (origin) {
+  let solved = false;
+  let final = [];
+  let tmp = [...origin];
 
   function solver(d) {
-    if (checkReady(d, tmp)) {
-      return;
-    }
+    if (d > 80) {
+        solved = true;
+        final = [...tmp];
+        return
+    };
     while (origin[d] !== 0) {
       d++;
-    }
-    ;
+    };
     for (let i = 1; i < 10; i++) {
       if (solved) {
         return;
       }
       tmp[d] = i;
-      if (kelpaa(d, tmp)) {
-        solver(d + 1);
+      if (checkRules(d, tmp)) {
+        solver(d + 1)
       }
     }
     tmp[d] = 0;
     return;
   }
-  solver(0, tmp);
+
+  solver(0);
   return final;
-};
+}
