@@ -3,19 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { SudokuGrid } from './SudokuGrid';
 
-const sudo1 = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9,
-  1, 2, 3, 4, 5, 6, 7, 8, 9
-];
-
-const sudo2 = [
+const vaikeaSudoku = [
   8, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 3, 6, 0, 0, 0, 0, 0,
   0, 7, 0, 0, 9, 0, 2, 0, 0,
@@ -27,36 +15,24 @@ const sudo2 = [
   0, 9, 0, 0, 0, 0, 4, 0, 0
 ];
 
-const empty = [
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0
-]
 
-var ready = false;
 
 const solveSudoku = function(origin) {
-  let tmp = []
+  let solved = false;
+  let final = []
+  let tmp = [...origin]
 
-  if (ready) {return tmp}
+  if (solved) {return final}
 
   const checkReady = (num, arr) => {
-     if (num > 60) {
-       ready = true
-       if (tmp.length < 10) {
-        tmp = [...arr]
-       }
+     if (num > 80) {
+       solved = true
+       final = [...arr]
      }
-     return ready
+     return solved
   }
 
-  const kelpaa = (index, arr) => {
+  const kelpaa = (index, arr) => { 
     // rivi
     let rivi = Math.floor(index / 9)
     let alku = rivi * 9
@@ -68,8 +44,6 @@ const solveSudoku = function(origin) {
       if (testi[i] > 1) {
         return false}
     }
-    //console.log(testi)
-
     // sarake
     alku = index % 9
     testi = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -80,61 +54,57 @@ const solveSudoku = function(origin) {
       if (testi[i] > 1) {
         return false}
     }
-    //console.log(testi)
-
     // ruutu
-
-
+    let x = Math.floor(index / 27)
+    let y = Math.floor(index % 9 / 3)
+    alku = x * 27 + y * 3 
+    testi = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for(let i = alku; i < alku + 27; i = i + 9) {
+      for(let j = i; j < i + 3; j++) {
+        if (arr[j] !== 0 ) { testi[arr[j]]++ }
+      }
+    }
+    for(let i = 0; i < testi.length; i++) {
+      if (testi[i] > 1) {
+        return false}
+    }
     return true
   }
 
-  function solver(d, s) {
-    if (checkReady(d, s)) { return }
+  function solver(d) {
+    if (checkReady(d, tmp)) { return }
     while (origin[d] !== 0) { d++ };
-    console.log(d)
-    //console.log(s)
     for(let i = 1; i < 10; i++) {
-      if (ready) { return }
-      s[d] = i;
-      if (kelpaa(d, s)) {
-        solver(++d, [...s])
-      }
-      if (i === 9) {
-       //console.log("täällä")
+      if (solved) { return }
+      tmp[d] = i;
+      if (kelpaa(d, tmp)) {
+        solver(d + 1)
       }
     }
+    tmp[d] = 0
     return
   }
-  solver(0, [...origin])
+  solver(0, tmp)
 
 
-  return tmp
+  return final
 }
 
 
 const App = () => {
-  const [ counter, setCounter ] = useState(0)
+  const [ sudoku, setSudo ] = useState([])
 
   const handleClick = () => {
-    //console.log('clicked')
+    console.log('clicked')
+    sudoku.length ? console.log("ready") : setSudo([...solveSudoku(vaikeaSudoku)])
   }
 
-  const setToValue = () => {
-    let value = counter + 1
-    setCounter(value)
-    //console.log(value)
-  }
-
-  const solvedSudoku = solveSudoku(sudo2)
-
-  return (<div>
-    <p>Hello World</p>
-    <SudokuGrid sudo={sudo2} />
-    <button type="button">SOLVE</button>
-    <button onClick={handleClick}>click this!</button>
-    <button onClick={setToValue}>+ PLUS + {counter}</button>
-   
-    <SudokuGrid sudo={solvedSudoku} />
-  </div>);
+  return (
+    <div>
+      <p>Sudoku Solver</p>
+      <SudokuGrid sudo={vaikeaSudoku} />
+      <button onClick={handleClick}>SOLVE</button>
+      <SudokuGrid sudo={sudoku} />
+    </div>);
 }
 ReactDOM.render(<App />, document.getElementById('root'));
