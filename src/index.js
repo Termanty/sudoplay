@@ -20,13 +20,14 @@ const App = () => {
   const [ sudoku, setSudo ] = useState([])
 
   const handleClick = () => {
-    console.log('clicked')
     sudoku.length ? console.log("ready") : setSudo([...solveSudoku(vaikeaSudoku)])
   }
 
   return (
     <div>
-      <p>Sudoku Solver</p>
+      <p>SUDOKU SOLVER</p>
+      <button onClick={() => console.log("Get")}>Get Sudoku</button>
+      <button onClick={() => console.log("Get")}>My own Sudoku</button>
       <SudokuGrid sudo={vaikeaSudoku} />
       <button onClick={handleClick}>SOLVE</button>
       <SudokuGrid sudo={sudoku} />
