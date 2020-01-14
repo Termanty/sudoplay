@@ -10,13 +10,18 @@ function thickerBorders(i, j) {
   }
 }
 
-export const SudokuGrid = ({ sudo }) => {
+export const SudokuGrid = ({ sudoku }) => {
   
   const items = [];
-  for (let i = 0; i < sudo.length; i = i + 9) {
+  for (let i = 0; i < sudoku.length; i = i + 9) {
     const cells = [];
     for (let j = i; j < i + 9; j++) {
-      cells.push(<td className={"borders " + thickerBorders(i, j)} key={j}>{sudo[j] === 0 ? " " : sudo[j]}</td>);
+      cells.push(<td
+        key={j}
+        style={sudoku[j] === 0 ? {color: "white"} : {color: "black"}}
+        className={"borders " + thickerBorders(i, j)}>   
+          {sudoku[j]}
+        </td>);
     }
     items.push(<tr key={i}>{cells}</tr>);
   }
