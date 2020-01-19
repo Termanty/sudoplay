@@ -71,5 +71,14 @@ export const solveSudoku = function (origin) {
   }
 
   solver(0);
-  return final;
+
+  const twoDimSolution = []
+  for(let i = 0; i < 81; i += 9) {
+    const row = []
+    for(let j = 0; j < 9; j++) {
+      row.push(final[i+j])
+    }
+    twoDimSolution.push(row)
+  }
+  return twoDimSolution;
 }

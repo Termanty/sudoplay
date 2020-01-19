@@ -1,35 +1,35 @@
 import React from 'react';
 import './index';
 
-function thickerBorders(i, j) {
-  if ((j % 3) === 2) {
-    return (i / 9) % 3 === 2 ? "thickBotRight" : "thickRight";
+function style(c, i, j) {
+  let style = "borders "
+  if ( j % 3 === 2) {
+    style += i % 3 === 2 ? "thickBotRight " : "thickRight ";
+  } else {
+    style += i % 3 === 2 ? "thickBot " : " ";
   }
-  else {
-    return (i / 9) % 3 === 2 ? "thickBot" : "";
-  }
+  style += c ? "visible" : "unvisible"
+  return style
 }
 
-export const SudokuGrid = ({ sudoku }) => {
-  
-  const items = [];
-  for (let i = 0; i < sudoku.length; i = i + 9) {
-    const cells = [];
-    for (let j = i; j < i + 9; j++) {
-      cells.push(<td
-        key={j}
-        style={sudoku[j] === 0 ? {color: "white"} : {color: "black"}}
-        className={"borders " + thickerBorders(i, j)}>   
-          {sudoku[j]}
-        </td>);
-    }
-    items.push(<tr key={i}>{cells}</tr>);
-  }
+function rowsToCellComponents(row, i) {
+  return (
+    <tr key={i}>
+      {row.map( (c,j) => <Cell key={10*i+j} c={c} i={i} j={j} /> )}
+    </tr>)
+}
 
+function Cell({ c, i, j }) {
+  return <td className={style(c, i, j)} >{c}</td>
+}
+
+function SudokuGrid({ sudoku }) {
   return (
     <table className="mystyleThick">
       <tbody>
-        {items}
+        {sudoku.map(rowsToCellComponents)}
       </tbody>
-    </table>);
+    </table>)
 }
+
+export default SudokuGrid;
