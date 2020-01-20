@@ -1,4 +1,4 @@
-const checkRules = (index, arr) => {
+function checkRules(index, arr) {
     // row
     let rivi = Math.floor(index / 9);
     let alku = rivi * 9;
@@ -43,7 +43,7 @@ const checkRules = (index, arr) => {
     return true;
 };
 
-export const solveSudoku = function (origin) {
+export function solveSudoku(origin) {
   let solved = false;
   let final = [];
   let tmp = [...origin];
