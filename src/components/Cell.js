@@ -7,10 +7,19 @@ function style(c, i, j) {
   } else {
     style += i % 3 === 2 ? "thickBot " : " ";
   }
-  style += c ? "visible" : "unvisible"
   return style
 }
 
-export function Cell({ c, i, j }) {
-  return <td className={style(c, i, j)}>{c}</td>;
+function numStyle(c) {
+  return c ? "visible" : "unvisible"
+}
+
+export function Cell({ c, i, j, click }) {
+  return (
+    <td className={style(c, i, j)}>
+      <button onClick={click} className={"innerbutton " + numStyle(c)}>
+        {c}
+      </button>
+    </td>
+  )
 }

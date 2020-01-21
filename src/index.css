@@ -14,7 +14,9 @@ body {
 }
 
 .button {
-  margin-left: 5px
+  margin: 5px 0px 5px 0px;
+  padding: 10px 17px 10px 17px;
+  border: none;
 }
 
 .mystyleThick {
@@ -26,7 +28,11 @@ body {
 .borders {
   border: 1px solid black;
   border-collapse: collapse;
-  padding: 4px 9px 4px 9px;
+  padding: 0px;
+}
+
+.borders:hover {
+  background: papayawhip;
 }
 
 .thickBot {
@@ -48,4 +54,23 @@ body {
 
 .unvisible {
   color: white;
+}
+
+.activeBar {
+  background-color: tomato;
+}
+
+.unactiveBar {
+  background-color: grey;
+}
+
+.innerbutton {
+  background: white;
+  margin: 0px;
+  padding: 4px 9px 4px 9px;
+  border: none;
+}
+
+.innerbutton:hover {
+  background: papayawhip;
 }

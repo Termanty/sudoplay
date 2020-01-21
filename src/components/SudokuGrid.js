@@ -1,22 +1,24 @@
 import React from 'react';
 import { Cell } from './Cell';
 
-function rows(sudoku) {
-  return sudoku.map(rowsToCellComponents)
-}
+export function SudokuGrid({ sudoku, clicks }) {
 
-function rowsToCellComponents(row, i) {
-  return (
-    <tr key={i}>
-      {row.map( (c,j) => <Cell key={10*i+j} c={c} i={i} j={j} /> )}
-    </tr>)
-}
+  function rows() {
+    return sudoku.map(rowsToCellComponents)
+  }
 
-export function SudokuGrid({ sudoku }) {
+  function rowsToCellComponents(row, i) {
+    return (
+      <tr key={i}>
+        {row.map( (c,j) => <Cell key={10*i+j} c={c} i={i} j={j} click={clicks[i][j]}/> )}
+      </tr>)
+  }
+
   return (
     <table className="mystyleThick">
       <tbody>
-        {rows(sudoku)}
+        {rows()}
       </tbody>
-    </table>)
+    </table>
+  )
 }

@@ -1,10 +1,31 @@
 import React from 'react';
 
-export function Navbar() {
+function active(nav, navBarNumber) {
+  return nav === navBarNumber ? "activeBar" : "unactiveBar"
+}
+
+export function Navbar({ nav, own, puzz, sign }) {
+
   return (
     <div>
-      <button className={"button"} onClick={() => console.log("Get")}>Give Sudoku</button>
-      <button className={"button"} onClick={() => console.log("Get")}>My own Sudoku</button>
+      <button
+        key={0}
+        className={"button " + active(nav, 0)}
+        onClick={puzz}>
+          solve puzzle
+      </button>
+      <button
+        key={1}
+        className={"button " + active(nav, 1)} 
+        onClick={own}>
+          fill puzzle
+      </button>
+      <button 
+        key={2}
+        className={"button " + active(nav, 2)} 
+        onClick={sign}>
+          sing in
+      </button>
     </div>
   )
 }
