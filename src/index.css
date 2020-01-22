@@ -22,7 +22,7 @@ body {
 .mystyleThick {
   border: 3px solid black;
   border-collapse: collapse;
-  margin: 5px;
+  margin: 3 px;
 }
 
 .borders {
@@ -67,10 +67,22 @@ body {
 .innerbutton {
   background: white;
   margin: 0px;
-  padding: 4px 9px 4px 9px;
+  padding: 5px 10px 5px 10px;
   border: none;
 }
 
 .innerbutton:hover {
   background: papayawhip;
+}
+
+.bold {
+  font-weight: Bold;
+}
+
+.blue {
+  color: blue;
+}
+
+.green {
+  color: green;
 }

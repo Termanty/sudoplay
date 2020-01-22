@@ -18,7 +18,7 @@ export function Navbar({ nav, own, puzz, sign }) {
         key={1}
         className={"button " + active(nav, 1)} 
         onClick={own}>
-          fill puzzle
+          create sudo
       </button>
       <button 
         key={2}

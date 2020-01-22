@@ -9,78 +9,66 @@ function copy(sudoku) {
 }
 
 export function App() {
-  const sudokuState = {
-    ready: false,
-    puzzle: copy(mostDifficultSudoku),
-    solution: []
-  };
-
-  const [sudoku, setSudoku] = useState(sudokuState);
+  
   const [navbar, setNavbar] = useState(0);
+  const [puzzle, setPuzzle] = useState(copy(mostDifficultSudoku));
+  const [createSudoku, setCreateSudoku] = useState(copy(empty))
+  const [showSolution, setShowSolution] = useState(false)
+  
+  const original = mostDifficultSudoku
+  const solution = solveSudoku(mostDifficultSudoku.flat())
 
+  
   let cellOnClickArray = []
-
   function createOnClickArray() {
     cellOnClickArray = empty
       .map( (row, i) => 
         row.map( (c, j) => () => {
           // console.log(`row: ${i}, cell: ${j}`)
-          let tmp = copy(sudoku.puzzle)
-          tmp[i][j]++
-          setSudoku({
-            ready: false,
-            puzzle: tmp,
-            solution: []
-          })
+          let tmp
+          if(navbar === 1) { 
+            tmp = copy(createSudoku)
+            tmp[i][j]++
+            setCreateSudoku(tmp)
+          } else {
+            tmp = copy(puzzle)
+            tmp[i][j]++
+            setPuzzle(tmp)
+          }
     }))
   }
-
   createOnClickArray()
 
-  const handelNavPuzzle = () => {
-    setNavbar(0)
-    setSudoku({
-      ready: false,
-      puzzle: copy(mostDifficultSudoku),
-      solution: []
-    })
-  }
 
-  const handelNavOwn = () => {
-    setNavbar(1)
-    setSudoku({
-      ready: false,
-      puzzle: copy(empty),
-      solution: []
-    })
-  }
-
-  const handelNavSign = () => {
-    setNavbar(2)
-  }
+  const handelNavPuzzle = () => setNavbar(0)
+  const handelNavOwn = () => setNavbar(1)
+  const handelNavSign = () => setNavbar(2)
  
+
   const handleClick = () => {
-    if (!sudoku.ready) {
-      setSudoku({
-        ready: true,
-        puzzle: copy(sudoku.puzzle),
-        solution: copy(solveSudoku(sudoku.puzzle.flat()))
-      });
-    }
+    console.log(solution);
+    
+    setShowSolution(!showSolution)
   };
+
 
   const submitSignIn = (event) => {
     event.preventDefault()
-    console.log('submit')
+    // console.log('submit')
   }
 
   const show = () => {
     if(navbar < 2) {
       return (
         <div>
-          <SudokuGrid sudoku={sudoku.puzzle} nav={navbar} clicks={cellOnClickArray}/>
-          <button className={"button"} onClick={handleClick}>SOLVE</button>
-          <SudokuGrid sudoku={sudoku.solution} />
+          <SudokuGrid 
+            sudoku={navbar === 0 ? puzzle : createSudoku} 
+            nav={navbar} 
+            clicks={cellOnClickArray}
+            original={original}
+            solution={solution}
+            showSolution={showSolution} />
+          <button className={"button"} onClick={handleClick}>Solution</button>
         </div>
       )
     }
