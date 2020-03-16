@@ -1,44 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { SudokuGrid } from './components/SudokuGrid';
 import { solveSudoku } from './solveSudoku';
-import { mostDifficultSudoku, empty } from './sudokuPuzzles';
 import { Navbar } from './components/Navbar';
+import { empty } from './empty';
 
 function copy(sudoku) {
   return sudoku.map(row => row.map(c => c))
 }
 
 export function App() {
-  
-  const [navbar, setNavbar] = useState(0);
-  const [puzzle, setPuzzle] = useState(copy(mostDifficultSudoku));
+  const [navbar, setNavbar] = useState(2);
+  const [puzzles, setPuzzles] = useState([]);
+  const [puzzle, setPuzzle] = useState([]);
+  const [solution, setSolution] = useState([])
   const [createSudoku, setCreateSudoku] = useState(copy(empty))
   const [showSolution, setShowSolution] = useState(false)
-  
-  const original = mostDifficultSudoku
-  const solution = solveSudoku(mostDifficultSudoku.flat())
+  var selected = 1;
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/puzzles")
+      .then( response => {
+        var data = response.data;
+        var p = data[selected].puzzle
+        setPuzzles(data)
+        setPuzzle(copy(p))
+        setSolution(solveSudoku(p.flat()))
+      })
+  }, [])
   
-  let cellOnClickArray = []
-  function createOnClickArray() {
-    cellOnClickArray = empty
-      .map( (row, i) => 
-        row.map( (c, j) => () => {
-          // console.log(`row: ${i}, cell: ${j}`)
-          let tmp
-          if(navbar === 1) { 
-            tmp = copy(createSudoku)
-            tmp[i][j]++
-            setCreateSudoku(tmp)
-          } else {
-            tmp = copy(puzzle)
-            tmp[i][j]++
-            setPuzzle(tmp)
+  function clicksArray() {
+    function increase(i, j ,sudoku, setSudoku) {
+      let tmp = copy(sudoku)
+      tmp[i][j]++
+      if(tmp[i][j] > 9) {
+        tmp[i][j] = 0
+      }
+      setSudoku(tmp)
+    }
+    function decrease(i, j ,sudoku, setSudoku) {
+      let tmp = copy(sudoku)
+      tmp[i][j]--
+      if(tmp[i][j] < 0) {
+        tmp[i][j] = 9
+      }
+      setSudoku(tmp)
+    }
+    return empty.map( (row, i) => {
+      if(navbar === 1) {
+        return row.map( (c, j) => {
+          return {
+            leftClick: () => increase(i, j, createSudoku, setCreateSudoku),
+            rightClick: () => decrease(i, j, createSudoku, setCreateSudoku)
           }
-    }))
+        })
+      } else {
+        return row.map( (c, j) => {
+          return {
+            leftClick: () => increase(i, j, puzzle, setPuzzle),
+            rightClick: () => decrease(i, j, createSudoku, setCreateSudoku)
+          }
+        })
+      }
+    })
   }
-  createOnClickArray()
-
 
   const handelNavPuzzle = () => setNavbar(0)
   const handelNavOwn = () => setNavbar(1)
@@ -46,15 +72,11 @@ export function App() {
  
 
   const handleClick = () => {
-    console.log(solution);
-    
     setShowSolution(!showSolution)
   };
 
-
   const submitSignIn = (event) => {
     event.preventDefault()
-    // console.log('submit')
   }
 
   const show = () => {
@@ -64,8 +86,8 @@ export function App() {
           <SudokuGrid 
             sudoku={navbar === 0 ? puzzle : createSudoku} 
             nav={navbar} 
-            clicks={cellOnClickArray}
-            original={original}
+            clicks={clicksArray()}
+            original={puzzles[selected].puzzle}
             solution={solution}
             showSolution={showSolution} />
           <button className={"button"} onClick={handleClick}>Solution</button>

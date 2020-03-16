@@ -1,7 +1,7 @@
 import React from 'react';
 import { Cell } from './Cell';
 
-export function SudokuGrid({ sudoku, clicks, nav, original,solution, showSolution }) {
+export function SudokuGrid({ sudoku, clicks, nav, original, solution, showSolution }) {
 
   function rows() {
     return sudoku.map(rowsToCellComponents)
@@ -10,7 +10,7 @@ export function SudokuGrid({ sudoku, clicks, nav, original,solution, showSolutio
   function rowsToCellComponents(row, i) {
     return (
       <tr key={i}>
-        {row.map( (c,j) => 
+        {row.map( (c,j) =>
           <Cell 
             key={10*i+j} 
             c={c} 

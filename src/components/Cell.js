@@ -28,12 +28,12 @@ function numStyle( c, original, solution, showSolution, nav ) {
 
 function showNumber(showSolution, solution, c, nav) {
   if ( nav === 1) {
-    return c
+    return c ? c : "_"
   } else {
     if ( showSolution ) {
       return solution
     } else {
-      return c
+      return c ? c : "_"
     }
 
   }
@@ -43,7 +43,8 @@ export function Cell({ c, i, j, click, original, solution, showSolution, nav }) 
   return (
     <td className={style(i, j)}>
       <button 
-      onClick={click} 
+      onClick={click.leftClick}
+      onContextMenu={click.rightClick}
       className={"innerbutton " + numStyle(c, original[i][j], solution[i][j], showSolution, nav)}
       >
         {showNumber(showSolution, solution[i][j], c, nav)}
