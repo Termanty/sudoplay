@@ -52,14 +52,20 @@ export function App() {
         return row.map( (c, j) => {
           return {
             leftClick: () => increase(i, j, createSudoku, setCreateSudoku),
-            rightClick: () => decrease(i, j, createSudoku, setCreateSudoku)
+            rightClick: (e) => { 
+              e.preventDefault()
+              decrease(i, j, createSudoku, setCreateSudoku)
+            }
           }
         })
       } else {
         return row.map( (c, j) => {
           return {
             leftClick: () => increase(i, j, puzzle, setPuzzle),
-            rightClick: () => decrease(i, j, createSudoku, setCreateSudoku)
+            rightClick: (e) => {
+              e.preventDefault() 
+              decrease(i, j, puzzle, setPuzzle)
+            }
           }
         })
       }
